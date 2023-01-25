@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model usuario {
+  codigo          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  nome            String    @db.VarChar(100)
+  sobrenome       String    @db.VarChar(100)
+  email           String    @db.VarChar(255)
+  senha           String    @db.VarChar(1000)
+  tipo_cadastro   Int
+  documento       String    @db.VarChar(15)
+  cadastrado      DateTime  @default(now()) @db.Timestamp(0)
+  alterado        DateTime  @default(dbgenerated("('0000-00-00 00:00:00')")) @db.Timestamp(0)
+  data_nascimento DateTime? @db.Date
+  url_avatar      String?   @db.VarChar(8000)
+  cnh             String?   @db.VarChar(15)
+  celular         String?   @db.VarChar(12)
+  sobre_mim       String?   @db.VarChar(500)
+}
