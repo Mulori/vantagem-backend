@@ -22,7 +22,7 @@ rota.get("/api/v1/usuarios/:codigo", async (req, res) => {
   }
 
   return res.status(200).send({
-    codigo: usuario.codigo,
+    codigo: usuario.codigo.toString(),
     nome: usuario.nome,
     sobrenome: usuario.sobrenome,
     email: usuario.email,

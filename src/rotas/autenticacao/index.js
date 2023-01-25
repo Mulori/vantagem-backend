@@ -7,11 +7,7 @@ const jwt = require("jsonwebtoken");
 const authConfig = require("../../config/autenticacao.json");
 
 function GenerateToken(param = {}) {
-  const teste = jwt.sign({ param }, authConfig.secret);
-
-  console.log(teste);
-
-  return;
+  return jwt.sign({ param }, authConfig.secret);
 }
 
 rota.post("/api/v1/registro", async (req, res) => {
@@ -67,16 +63,17 @@ rota.post("/api/v1/registro", async (req, res) => {
     })
     .then((e) => {
       return res.status(200).send({
-        codigo: e.codigo,
+        codigo: e.codigo.toString(),
         nome: e.nome,
         sobrenome: e.sobrenome,
         email: e.email,
         cadastrado: e.cadastrado,
         tipo_cadastro: e.tipo_cadastro,
-        token: "Bearer " + GenerateToken({ codigo: e.codigo }),
+        token: "Bearer " + GenerateToken({ codigo: e.codigo.toString() }),
       });
     })
     .catch((err) => {
+      console.log(err);
       return res.status(500).send("Ocorreu um erro inesperado.");
     });
 });
@@ -90,8 +87,6 @@ rota.post("/api/v1/acesso", async (req, res) => {
       .send("Solicitação Incorreta. Por favor valide os campos.");
   }
 
-  console.log("passou 1");
-
   if (!validator.validate(email.trim())) {
     return res.status(400).send("O e-mail informado é inválido.");
   }
@@ -99,8 +94,6 @@ rota.post("/api/v1/acesso", async (req, res) => {
   if (senha.length < 6) {
     return res.status(400).send("A senha deve conter no mínimo 6 caractéres.");
   }
-
-  console.log("passou 2");
 
   const validaUsuario = await prisma.usuario.findFirst({
     where: { email: email.trim(), senha: md5(senha.trim()) },
@@ -110,21 +103,15 @@ rota.post("/api/v1/acesso", async (req, res) => {
     return res.status(404).send("E-mail e/ou senha incorretos.");
   }
 
-  console.log("passou 3");
-
-  // GenerateToken({
-  //  codigo: validaUsuario.codigo,
-  //  documento: validaUsuario.documento,
-  // });
-
   return res.status(200).send({
-    codigo: validaUsuario.codigo,
+    codigo: validaUsuario.codigo.toString(),
     nome: validaUsuario.nome,
     sobrenome: validaUsuario.sobrenome,
     email: validaUsuario.email,
     tipo_cadastro: validaUsuario.tipo_cadastro,
     cadastrado: validaUsuario.cadastrado,
-    token: "Bearer ",
+    token:
+      "Bearer " + GenerateToken({ codigo: validaUsuario.codigo.toString() }),
   });
 });
 
