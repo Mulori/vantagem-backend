@@ -7,7 +7,11 @@ const jwt = require("jsonwebtoken");
 const authConfig = require("../../config/autenticacao.json");
 
 function GenerateToken(param = {}) {
-  return jwt.sign({ param }, authConfig.secret);
+  const teste = jwt.sign({ param }, authConfig.secret);
+
+  console.log(teste);
+
+  return;
 }
 
 rota.post("/api/v1/registro", async (req, res) => {
@@ -106,11 +110,12 @@ rota.post("/api/v1/acesso", async (req, res) => {
     return res.status(404).send("E-mail e/ou senha incorretos.");
   }
 
-  console.log("passou 2,5");
-
-  console.log(GenerateToken({ codigo: validaUsuario.codigo }));
-
   console.log("passou 3");
+
+  GenerateToken({
+    codigo: validaUsuario.codigo,
+    documento: validaUsuario.documento,
+  });
 
   return res.status(200).send({
     codigo: validaUsuario.codigo,
@@ -119,8 +124,7 @@ rota.post("/api/v1/acesso", async (req, res) => {
     email: validaUsuario.email,
     tipo_cadastro: validaUsuario.tipo_cadastro,
     cadastrado: validaUsuario.cadastrado,
-    token:
-      "Bearer " + GenerateToken({ codigo: validaUsuario.codigo.toString() }),
+    token: "Bearer ",
   });
 });
 
