@@ -112,10 +112,10 @@ rota.post("/api/v1/acesso", async (req, res) => {
 
   console.log("passou 3");
 
-  GenerateToken({
-    codigo: validaUsuario.codigo,
-    documento: validaUsuario.documento,
-  });
+  // GenerateToken({
+  //  codigo: validaUsuario.codigo,
+  //  documento: validaUsuario.documento,
+  // });
 
   return res.status(200).send({
     codigo: validaUsuario.codigo,
