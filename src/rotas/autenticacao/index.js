@@ -6,9 +6,9 @@ const validator = require("email-validator");
 const jwt = require("jsonwebtoken");
 const authConfig = require("../../config/autenticacao.json");
 
-function GenerateToken(param = {}) {
-  return jwt.sign({ param }, authConfig.secret).toString();
-}
+BigInt.prototype.toJSON = function GenerateToken(param = {}) {
+  return jwt.sign({ param }, authConfig.secret);
+};
 
 rota.post("/api/v1/registro", async (req, res) => {
   const { nome, sobrenome, email, senha, tipo_cadastro, documento } = req.body;
