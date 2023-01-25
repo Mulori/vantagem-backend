@@ -33,6 +33,6 @@ server.use(autenticacao);
 server.use(inicio);
 server.use(usuario);
 
-server.listen(2258, () => {
+server.listen(process.env.PORT || 2258, () => {
   console.log("AVISO: Sucesso ao iniciar o serviço da API!");
 });

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "production": "node ./build/index.js",
+    "production": "node ./src/index.js",
+    "development": "node ./src/index.js",
     "postinstall": "tsc",
     "teste": "jest"
   },
