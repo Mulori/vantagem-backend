@@ -86,6 +86,8 @@ rota.post("/api/v1/acesso", async (req, res) => {
       .send("Solicitação Incorreta. Por favor valide os campos.");
   }
 
+  console.log("passou 1");
+
   if (!validator.validate(email.trim())) {
     return res.status(400).send("O e-mail informado é inválido.");
   }
@@ -94,6 +96,8 @@ rota.post("/api/v1/acesso", async (req, res) => {
     return res.status(400).send("A senha deve conter no mínimo 6 caractéres.");
   }
 
+  onsole.log("passou 2");
+
   const validaUsuario = await prisma.usuario.findFirst({
     where: { email: email.trim(), senha: md5(senha.trim()) },
   });
@@ -101,6 +105,8 @@ rota.post("/api/v1/acesso", async (req, res) => {
   if (!validaUsuario) {
     return res.status(404).send("E-mail e/ou senha incorretos.");
   }
+
+  onsole.log("passou 3");
 
   return res.status(200).send({
     codigo: validaUsuario.codigo,
