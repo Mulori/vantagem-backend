@@ -96,7 +96,7 @@ rota.put("/api/v1/usuarios/:codigo/alteraSenha", async (req, res) => {
 
 rota.put("/api/v1/usuarios/:codigo/alteraEmail", async (req, res) => {
   const { codigo } = req.params;
-  const { email_antigo, email_novo, confirma_email } = req.body;
+  const { email_novo, confirma_email, confirma_senha } = req.body;
 
   var now = new Date();
   now.setHours(now.getHours() - 3);
@@ -105,7 +105,7 @@ rota.put("/api/v1/usuarios/:codigo/alteraEmail", async (req, res) => {
     return res.status(400).send("Nenhum código informado.");
   }
 
-  if (!email_antigo || !email_novo || !confirma_email) {
+  if (!confirma_senha || !email_novo || !confirma_email) {
     return res.status(400).send("Solicitação Incorreta.");
   }
 
@@ -117,20 +117,20 @@ rota.put("/api/v1/usuarios/:codigo/alteraEmail", async (req, res) => {
     return res.status(404).send("Nenhuma conta com o código informado.");
   }
 
-  const retorno_email = await prisma.conta.findFirst({
+  const usuario_senha = await prisma.usuario.findFirst({
+    where: { codigo: parseInt(codigo), senha: md5(confirma_senha) },
+  });
+
+  if (!usuario_senha) {
+    return res.status(401).send("Senha incorreta.");
+  }
+
+  const retorno_email = await prisma.usuario.findFirst({
     where: { NOT: { codigo: parseInt(codigo) }, email: email_novo.trim() },
   });
 
   if (retorno_email) {
     return res.status(401).send("Já existe uma conta com este e-mail.");
-  }
-
-  const usuario_email = await prisma.usuario.findFirst({
-    where: { codigo: parseInt(codigo), email: email_antigo },
-  });
-
-  if (!usuario_email) {
-    return res.status(401).send("O e-mail antigo é invalido.");
   }
 
   if (email_novo.trim() !== confirma_email.trim()) {
