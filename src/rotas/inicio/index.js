@@ -5,7 +5,7 @@ rota.get("/", async (requisicao, resposta) => {
 
   return resposta
     .status(200)
-    .send("Olá! Seja bem-vindo ao VANTAGEM. \n\r Acessado em: " + now);
+    .send("Olá! Seja bem-vindo ao VANTAGEM. v1.0.0 \n\r Acessado em: " + now);
 });
 
 module.exports = rota;
