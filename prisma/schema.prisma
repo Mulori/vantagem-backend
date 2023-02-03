@@ -8,18 +8,253 @@ datasource db {
 }
 
 model usuario {
-  codigo          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
-  nome            String    @db.VarChar(100)
-  sobrenome       String    @db.VarChar(100)
-  email           String    @db.VarChar(255)
-  senha           String    @db.VarChar(1000)
-  tipo_cadastro   Int
-  documento       String    @db.VarChar(15)
-  cadastrado      DateTime  @default(now()) @db.Timestamp(0)
-  alterado        DateTime  @default(dbgenerated("('0000-00-00 00:00:00')")) @db.Timestamp(0)
-  data_nascimento DateTime? @db.Date
-  url_avatar      String?   @db.VarChar(8000)
-  cnh             String?   @db.VarChar(15)
-  celular         String?   @db.VarChar(12)
-  sobre_mim       String?   @db.VarChar(500)
+  codigo                                                        Int                       @id @default(autoincrement())
+  nome                                                          String                    @db.VarChar(100)
+  sobrenome                                                     String                    @db.VarChar(100)
+  email                                                         String                    @db.VarChar(255)
+  senha                                                         String                    @db.VarChar(1000)
+  tipo_cadastro                                                 Int
+  documento                                                     String                    @db.VarChar(15)
+  cadastrado                                                    DateTime                  @db.DateTime(0)
+  alterado                                                      DateTime                  @db.DateTime(0)
+  data_nascimento                                               DateTime?                 @db.Date
+  url_avatar                                                    String?                   @db.VarChar(8000)
+  cnh                                                           String?                   @db.VarChar(15)
+  celular                                                       String?                   @db.VarChar(12)
+  sobre_mim                                                     String?                   @db.VarChar(500)
+  responsavel_escolar                                           responsavel_escolar[]
+  rota_usuario                                                  rota_usuario[]
+  usuario_escola                                                usuario_escola[]
+  usuario_periodo                                               usuario_periodo[]
+  usuario_tipo_transporte                                       usuario_tipo_transporte[]
+  veiculo_motorista_veiculo_motorista_codigo_motoristaTousuario veiculo_motorista[]       @relation("veiculo_motorista_codigo_motoristaTousuario")
+  veiculo_motorista_veiculo_motorista_codigo_usuarioTousuario   veiculo_motorista[]       @relation("veiculo_motorista_codigo_usuarioTousuario")
+}
+
+model aluno_responsavel_escolar {
+  codigo                 Int                 @id @default(autoincrement())
+  codigo_escola          Int
+  codigo_periodo         Int
+  codigo_responsavel     Int
+  codigo_veiculo         Int
+  codigo_tipo_transporte Int
+  nome_completo          String              @db.VarChar(255)
+  documento              String?             @db.VarChar(50)
+  data_nascimento        DateTime?           @db.Date
+  valor_mensalidade      Decimal             @db.Decimal(14, 2)
+  observacao             String?             @db.VarChar(5000)
+  escola                 escola              @relation(fields: [codigo_escola], references: [codigo], onUpdate: Restrict, map: "fk_codigo_escola_aluno")
+  periodo                periodo             @relation(fields: [codigo_periodo], references: [codigo], onUpdate: Restrict, map: "fk_codigo_periodo_aluno")
+  responsavel_escolar    responsavel_escolar @relation(fields: [codigo_responsavel], references: [codigo], onUpdate: Restrict, map: "fk_codigo_responsavel_escolar")
+  veiculo_motorista      veiculo_motorista   @relation(fields: [codigo_veiculo], references: [codigo], onUpdate: Restrict, map: "fk_codigo_veiculo_aluno")
+
+  @@index([codigo_escola], map: "fk_codigo_escola_aluno")
+  @@index([codigo_periodo], map: "fk_codigo_periodo_aluno")
+  @@index([codigo_responsavel], map: "fk_codigo_responsavel_escolar")
+  @@index([codigo_veiculo], map: "fk_codigo_veiculo_aluno")
+}
+
+model bairro {
+  codigo               Int                    @id @default(autoincrement())
+  id_cidade            Int
+  id_bairro            Int
+  nome                 String                 @db.VarChar(255)
+  detalhe_rota_usuario detalhe_rota_usuario[]
+}
+
+model cidade {
+  codigo    Int    @id @default(autoincrement())
+  id_cidade Int
+  UF        String @db.Char(2)
+  ibge_id   Int
+  nome      String @db.VarChar(255)
+}
+
+model detalhe_rota_usuario {
+  codigo      Int    @id @default(autoincrement())
+  codigo_rota Int
+  id_bairro   Int
+  bairro      bairro @relation(fields: [id_bairro], references: [codigo], onUpdate: Restrict, map: "fk_id_bairro_rota")
+
+  @@index([id_bairro], map: "fk_id_bairro_rota")
+}
+
+model escola {
+  codigo                    Int                         @id @default(autoincrement())
+  nome_escola               String                      @db.VarChar(150)
+  endereco_escola           String                      @db.VarChar(255)
+  bairro_escola             String                      @db.VarChar(100)
+  numero_escola             String                      @db.VarChar(20)
+  cidade_escola             String                      @db.VarChar(150)
+  estado_escola             String                      @db.VarChar(150)
+  cep_escola                String                      @db.VarChar(20)
+  ativo                     Int
+  aluno_responsavel_escolar aluno_responsavel_escolar[]
+  usuario_escola            usuario_escola[]
+}
+
+model estado {
+  codigo Int    @id @default(autoincrement())
+  nome   String @db.VarChar(150)
+  uf     String @db.Char(2)
+  regiao String @db.VarChar(100)
+}
+
+model mensalidade {
+  codigo             Int     @id @default(autoincrement())
+  codigo_motorista   Int
+  codigo_responsavel Int
+  ano                Int
+  janeiro_valor      Decimal @db.Decimal(14, 2)
+  janeiro_recebido   Decimal @db.Decimal(14, 2)
+  fevereiro_valor    Decimal @db.Decimal(14, 2)
+  fevereiro_recebido Decimal @db.Decimal(14, 2)
+  marco_valor        Decimal @db.Decimal(14, 2)
+  marco_recebido     Decimal @db.Decimal(14, 2)
+  abril_valor        Decimal @db.Decimal(14, 2)
+  abril_recebido     Decimal @db.Decimal(14, 2)
+  maio_valor         Decimal @db.Decimal(14, 2)
+  maio_recebido      Decimal @db.Decimal(14, 2)
+  junho_valor        Decimal @db.Decimal(14, 2)
+  junho_recebido     Decimal @db.Decimal(14, 2)
+  julho_valor        Decimal @db.Decimal(14, 2)
+  julho_recebido     Decimal @db.Decimal(14, 2)
+  agosto_valor       Decimal @db.Decimal(14, 2)
+  agosto_recebido    Decimal @db.Decimal(14, 2)
+  setembro_valor     Decimal @db.Decimal(14, 2)
+  setembro_recebido  Decimal @db.Decimal(14, 2)
+  outubro_valor      Decimal @db.Decimal(14, 2)
+  outubro_recebido   Decimal @db.Decimal(14, 2)
+  novembro_valor     Decimal @db.Decimal(14, 2)
+  novembro_recebido  Decimal @db.Decimal(14, 2)
+  dezembro_valor     Decimal @db.Decimal(14, 2)
+  dezembro_recebido  Decimal @db.Decimal(14, 2)
+}
+
+model opcional {
+  codigo                     Int                          @id @default(autoincrement())
+  descricao                  String                       @db.VarChar(255)
+  veiculo_motorista_opcional veiculo_motorista_opcional[]
+}
+
+model periodo {
+  codigo                    Int                         @id @default(autoincrement())
+  descricao                 String                      @db.VarChar(255)
+  aluno_responsavel_escolar aluno_responsavel_escolar[]
+  usuario_periodo           usuario_periodo[]
+}
+
+model responsavel_escolar {
+  codigo                    Int                         @id @default(autoincrement())
+  codigo_motorista          Int
+  codigo_periodo            Int
+  nome_completo             String                      @db.VarChar(255)
+  cpf_cnpj                  String                      @db.VarChar(14)
+  data_nascimento           DateTime?                   @db.Date
+  email                     String                      @db.VarChar(255)
+  telefone                  String?                     @db.VarChar(30)
+  celular                   String                      @db.VarChar(30)
+  valor_mensalidade         Decimal                     @db.Decimal(14, 2)
+  cadastrado                DateTime                    @db.DateTime(0)
+  alterado                  DateTime                    @db.DateTime(0)
+  ativo                     Int
+  excluido                  Int
+  aluno_responsavel_escolar aluno_responsavel_escolar[]
+  usuario                   usuario                     @relation(fields: [codigo_motorista], references: [codigo], onUpdate: Restrict, map: "fk_codigo_motorista_responsavel")
+
+  @@index([codigo_motorista], map: "fk_codigo_motorista_responsavel")
+}
+
+model rota_usuario {
+  codigo         Int     @id @default(autoincrement())
+  nome_rota      String  @db.VarChar(100)
+  codigo_usuario Int
+  usuario        usuario @relation(fields: [codigo_usuario], references: [codigo], onUpdate: Restrict, map: "fk_codigo_usuario_rota")
+
+  @@index([codigo_usuario], map: "fk_codigo_usuario_rota")
+}
+
+model tipo_transporte {
+  codigo                  Int                       @id @default(autoincrement())
+  descricao               String                    @db.VarChar(255)
+  usuario_tipo_transporte usuario_tipo_transporte[]
+}
+
+model usuario_escola {
+  codigo         Int     @id @default(autoincrement())
+  codigo_usuario Int
+  codigo_escola  Int
+  ativo          Int
+  escola         escola  @relation(fields: [codigo_escola], references: [codigo], onUpdate: Restrict, map: "fk_codigo_escolaa")
+  usuario        usuario @relation(fields: [codigo_usuario], references: [codigo], onUpdate: Restrict, map: "fk_codigo_usuario")
+
+  @@index([codigo_escola], map: "fk_codigo_escolaa")
+  @@index([codigo_usuario], map: "fk_codigo_usuario")
+}
+
+model usuario_periodo {
+  codigo         Int     @id @default(autoincrement())
+  codigo_periodo Int
+  codigo_usuario Int
+  periodo        periodo @relation(fields: [codigo_periodo], references: [codigo], onUpdate: Restrict, map: "fk_codigo_periodo")
+  usuario        usuario @relation(fields: [codigo_usuario], references: [codigo], onUpdate: Restrict, map: "fk_codigo_usuarioo")
+
+  @@index([codigo_periodo], map: "fk_codigo_periodo")
+  @@index([codigo_usuario], map: "fk_codigo_usuarioo")
+}
+
+model usuario_tipo_transporte {
+  codigo                 Int             @id @default(autoincrement())
+  codigo_tipo_transporte Int
+  codigo_usuario         Int
+  tipo_transporte        tipo_transporte @relation(fields: [codigo_tipo_transporte], references: [codigo], onUpdate: Restrict, map: "fk_codigo_tipo_transporte")
+  usuario                usuario         @relation(fields: [codigo_usuario], references: [codigo], onUpdate: Restrict, map: "fk_codigo_usuariooo_tipo_transporte")
+
+  @@index([codigo_tipo_transporte], map: "fk_codigo_tipo_transporte")
+  @@index([codigo_usuario], map: "fk_codigo_usuariooo_tipo_transporte")
+}
+
+model veiculo_motorista {
+  codigo                                              Int                          @id @default(autoincrement())
+  codigo_usuario                                      Int
+  codigo_motorista                                    Int
+  veiculo_modelo                                      String                       @db.VarChar(150)
+  veiculo_marca                                       String                       @db.VarChar(100)
+  veiculo_ano                                         String                       @db.VarChar(20)
+  veiculo_placa                                       String                       @db.VarChar(10)
+  veiculo_renavam                                     String                       @db.VarChar(13)
+  veiculo_lugares                                     Int
+  cadastrado                                          DateTime                     @db.DateTime(0)
+  alterado                                            DateTime                     @db.DateTime(0)
+  ativo                                               Int
+  excluido                                            Int
+  aluno_responsavel_escolar                           aluno_responsavel_escolar[]
+  usuario_veiculo_motorista_codigo_motoristaTousuario usuario                      @relation("veiculo_motorista_codigo_motoristaTousuario", fields: [codigo_motorista], references: [codigo], onUpdate: Restrict, map: "fk_motorista_veiculo")
+  usuario_veiculo_motorista_codigo_usuarioTousuario   usuario                      @relation("veiculo_motorista_codigo_usuarioTousuario", fields: [codigo_usuario], references: [codigo], onUpdate: Restrict, map: "fk_usuario_veiculo")
+  veiculo_motorista_imagem                            veiculo_motorista_imagem[]
+  veiculo_motorista_opcional                          veiculo_motorista_opcional[]
+
+  @@index([codigo_motorista], map: "fk_motorista_veiculo")
+  @@index([codigo_usuario], map: "fk_usuario_veiculo")
+}
+
+model veiculo_motorista_imagem {
+  codigo                   Int               @id @default(autoincrement())
+  codigo_veiculo_motorista Int
+  url_imagem               String            @db.VarChar(5000)
+  veiculo_motorista        veiculo_motorista @relation(fields: [codigo_veiculo_motorista], references: [codigo], onUpdate: Restrict, map: "fk_imagem_veiculo_motorista")
+
+  @@index([codigo_veiculo_motorista], map: "fk_imagem_veiculo_motorista")
+}
+
+model veiculo_motorista_opcional {
+  codigo                   Int               @id @default(autoincrement())
+  codigo_veiculo_motorista Int
+  codigo_opcional          Int
+  possui                   String            @db.Char(3)
+  opcional                 opcional          @relation(fields: [codigo_opcional], references: [codigo], onUpdate: Restrict, map: "fk_opcional")
+  veiculo_motorista        veiculo_motorista @relation(fields: [codigo_veiculo_motorista], references: [codigo], onUpdate: Restrict, map: "fk_veiculo_motorista")
+
+  @@index([codigo_opcional], map: "fk_opcional")
+  @@index([codigo_veiculo_motorista], map: "fk_veiculo_motorista")
 }
