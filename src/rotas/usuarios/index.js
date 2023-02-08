@@ -15,27 +15,14 @@ rota.get("/api/v1/usuarios/:codigo", async (req, res) => {
 
   const usuario = await prisma.usuario.findFirst({
     where: { codigo: parseInt(codigo) },
+    include: { usuario_financeiro: true },
   });
 
   if (!usuario) {
     return res.status(404).send("Nenhum usuário encontrado");
   }
 
-  return res.status(200).send({
-    codigo: usuario.codigo.toString(),
-    nome: usuario.nome,
-    sobrenome: usuario.sobrenome,
-    email: usuario.email,
-    tipo_cadastro: usuario.tipo_cadastro,
-    cadastrado: usuario.cadastrado,
-    alterado: usuario.alterado,
-    url_avatar: usuario.url_avatar,
-    data_nascimento: usuario.data_nascimento,
-    cnh: usuario.cnh,
-    documento: usuario.documento,
-    celular: usuario.celular,
-    sobre_mim: usuario.sobre_mim,
-  });
+  return res.status(200).json(usuario);
 });
 
 rota.put("/api/v1/usuarios/:codigo/alteraSenha", async (req, res) => {

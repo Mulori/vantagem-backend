@@ -25,6 +25,7 @@ model usuario {
   responsavel_escolar                                           responsavel_escolar[]
   rota_usuario                                                  rota_usuario[]
   usuario_escola                                                usuario_escola[]
+  usuario_financeiro                                            usuario_financeiro[]
   usuario_periodo                                               usuario_periodo[]
   usuario_tipo_transporte                                       usuario_tipo_transporte[]
   veiculo_motorista_veiculo_motorista_codigo_motoristaTousuario veiculo_motorista[]       @relation("veiculo_motorista_codigo_motoristaTousuario")
@@ -257,4 +258,16 @@ model veiculo_motorista_opcional {
 
   @@index([codigo_opcional], map: "fk_opcional")
   @@index([codigo_veiculo_motorista], map: "fk_veiculo_motorista")
+}
+
+model usuario_financeiro {
+  codigo         Int      @id @default(autoincrement())
+  codigo_usuario Int
+  tipo_chave_pix Int
+  chave_pix      String   @db.VarChar(500)
+  cadastrado     DateTime @db.DateTime(0)
+  alterado       DateTime @db.DateTime(0)
+  usuario        usuario  @relation(fields: [codigo_usuario], references: [codigo], onUpdate: Restrict, map: "fk_usuario_financeiro")
+
+  @@index([codigo_usuario], map: "fk_usuario_financeiro")
 }
