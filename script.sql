@@ -228,5 +228,13 @@ create table mensalidade(
 	dezembro_recebido decimal(14,2) not null
 );
 
-
+create table usuario_financeiro (
+	codigo int AUTO_INCREMENT primary key,
+	codigo_usuario int not null,
+	tipo_chave_pix int not null,
+	chave_pix varchar(500) not null,
+	cadastrado datetime not null,
+	alterado datetime not null,
+	constraint fk_usuario_financeiro foreign key (codigo_usuario) references usuario (codigo)
+);
 
