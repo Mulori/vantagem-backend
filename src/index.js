@@ -7,6 +7,7 @@ const usuario = require("./rotas/usuarios");
 const autenticacao = require("./rotas/autenticacao");
 const veiculo = require("./rotas/veiculo");
 const usuarioFinanceiro = require("./rotas/usuariosFinanceiro");
+const cep = require("./rotas/cep");
 
 const { application } = require("express");
 
@@ -37,6 +38,7 @@ server.use(inicio);
 server.use(usuario);
 server.use(veiculo);
 server.use(usuarioFinanceiro);
+server.use(cep);
 
 server.listen(process.env.PORT || 2258, () => {
   console.log("AVISO: Sucesso ao iniciar o serviço da API!");

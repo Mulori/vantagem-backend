@@ -11,12 +11,43 @@ function GenerateToken(param = {}) {
 }
 
 rota.post("/api/v1/registro", async (req, res) => {
-  const { nome, sobrenome, email, senha, tipo_cadastro, documento } = req.body;
+  const {
+    nome,
+    sobrenome,
+    email,
+    senha,
+    tipo_cadastro,
+    documento,
+    data_nascimento,
+    celular,
+    rg,
+    endereco,
+    numero,
+    complemento,
+    cep,
+    codigo_bairro,
+  } = req.body;
 
   var now = new Date();
+  var date = new Date(data_nascimento);
   now.setHours(now.getHours() - 3);
 
-  if (!nome || !sobrenome || !email || !senha || !tipo_cadastro || !documento) {
+  if (
+    !nome ||
+    !sobrenome ||
+    !email ||
+    !senha ||
+    !tipo_cadastro ||
+    !documento ||
+    !data_nascimento ||
+    !celular ||
+    !rg ||
+    !endereco ||
+    !numero ||
+    !complemento ||
+    !cep ||
+    !codigo_bairro
+  ) {
     return res
       .status(400)
       .send("Solicitação Incorreta. Por favor valide os campos.");
@@ -40,8 +71,26 @@ rota.post("/api/v1/registro", async (req, res) => {
 
   if (validaDoc) {
     return res
-      .status(400)
-      .send("Já existe um usuário com o documento informado.");
+      .status(403)
+      .send("Já existe um usuário com o CPF ou CNPJ informado.");
+  }
+
+  const validaRG = await prisma.usuario.findFirst({
+    where: { rg: rg.trim() },
+  });
+
+  if (validaRG) {
+    return res.status(403).send("Já existe um usuário com o RG informado.");
+  }
+
+  const validaBairro = await prisma.bairro.findFirst({
+    where: { codigo: parseInt(codigo_bairro) },
+  });
+
+  if (!validaBairro) {
+    return res
+      .status(404)
+      .send("Nenhum bairro foi encontrado em nossa base com o ID informado.");
   }
 
   if (senha.length < 6) {
@@ -59,6 +108,16 @@ rota.post("/api/v1/registro", async (req, res) => {
         documento: documento.trim(),
         cadastrado: now,
         alterado: now,
+        data_nascimento: date,
+        celular: celular.trim(),
+        rg: rg.trim(),
+        endereco: endereco.trim(),
+        numero: numero.trim(),
+        complemento: complemento.trim(),
+        cep: cep.trim(),
+        codigo_bairro: parseInt(codigo_bairro),
+        acesso: 0,
+        excluido: 0,
       },
     })
     .then((e) => {
@@ -69,7 +128,6 @@ rota.post("/api/v1/registro", async (req, res) => {
         email: e.email,
         cadastrado: e.cadastrado,
         tipo_cadastro: e.tipo_cadastro,
-        token: "Bearer " + GenerateToken({ codigo: e.codigo.toString() }),
       });
     })
     .catch((err) => {
@@ -96,11 +154,19 @@ rota.post("/api/v1/acesso", async (req, res) => {
   }
 
   const validaUsuario = await prisma.usuario.findFirst({
-    where: { email: email.trim(), senha: md5(senha.trim()) },
+    where: { email: email.trim(), senha: md5(senha.trim()), excluido: 0 },
   });
 
   if (!validaUsuario) {
     return res.status(404).send("E-mail e/ou senha incorretos.");
+  }
+
+  if (validaUsuario.acesso === 0) {
+    return res
+      .status(403)
+      .send(
+        "Sua conta ainda não foi verificada. Por favor, aguarde mais um tempo para que a mesma seja autorizada."
+      );
   }
 
   return res.status(200).send({

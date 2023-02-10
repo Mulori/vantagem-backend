@@ -7,8 +7,6 @@ create table estado(
 	regiao varchar(100) not null
 );
 
-select count(*) from estado
-
 //Preenchido pela API
 create table cidade(
 	codigo int AUTO_INCREMENT primary key,
@@ -18,8 +16,6 @@ create table cidade(
 	nome varchar(255) not null
 );
 
-select count(*) from cidade
-
 //Preenchido pela API
 create table bairro(
 	codigo int AUTO_INCREMENT primary key,
@@ -27,8 +23,6 @@ create table bairro(
 	id_bairro int not null,
 	nome varchar(255) not null
 );
-
-select count(*) from bairro
 
 //Preenchido pelo VANTAGEM
 create table tipo_transporte (
@@ -55,7 +49,6 @@ insert into opcional (descricao) VALUES ('Leito');
 insert into opcional (descricao) VALUES ('Semi-Leito');
 insert into opcional (descricao) VALUES ('Banheiro');
 insert into opcional (descricao) VALUES ('Freezer');
-
 
 //Preenchido pelo VANTAGEM
 create table escola (
@@ -84,7 +77,16 @@ create table usuario (
 	url_avatar varchar(8000),
 	cnh varchar(15),
 	celular varchar(12),
-	sobre_mim varchar(500)
+	sobre_mim varchar(500),
+	rg varchar(15) not null,
+	endereco varchar(100) not null,
+	numero varchar(10) not null,
+	complemento varchar(150),
+	cep varchar(10) not null,
+	codigo_bairro int not null,
+	acesso int not null,
+	excluido int not null,
+	constraint fk_usuario_bairro foreign key (codigo_bairro) references bairro (codigo)
 );
 
 create table usuario_escola(
