@@ -5,6 +5,7 @@ const md5 = require("md5");
 const validator = require("email-validator");
 const jwt = require("jsonwebtoken");
 const authConfig = require("../../config/autenticacao.json");
+const validaDocumento = require("../../middlewares/validaCpfCnpj");
 
 function GenerateToken(param = {}) {
   return jwt.sign({ param }, authConfig.secret);
@@ -15,6 +16,7 @@ rota.post("/api/v1/registro", async (req, res) => {
     nome,
     sobrenome,
     email,
+    confirma_email,
     senha,
     tipo_cadastro,
     documento,
@@ -30,12 +32,14 @@ rota.post("/api/v1/registro", async (req, res) => {
 
   var now = new Date();
   var date = new Date(data_nascimento);
+  var acesso = 0;
   now.setHours(now.getHours() - 3);
 
   if (
     !nome ||
     !sobrenome ||
     !email ||
+    !confirma_email ||
     !senha ||
     !tipo_cadastro ||
     !documento ||
@@ -44,7 +48,6 @@ rota.post("/api/v1/registro", async (req, res) => {
     !rg ||
     !endereco ||
     !numero ||
-    !complemento ||
     !cep ||
     !codigo_bairro
   ) {
@@ -57,12 +60,20 @@ rota.post("/api/v1/registro", async (req, res) => {
     return res.status(400).send("O e-mail informado é inválido.");
   }
 
+  if (!validaDocumento(documento)) {
+    return res.status(400).send("O CPF ou CNPJ informado é invalido.");
+  }
+
   const validaEmail = await prisma.usuario.findFirst({
     where: { email: email.trim() },
   });
 
   if (validaEmail) {
     return res.status(400).send("O e-mail informado já está cadastrado.");
+  }
+
+  if (confirma_email.trim() !== email.trim()) {
+    return res.status(400).send("Os e-mails não são correspondentes.");
   }
 
   const validaDoc = await prisma.usuario.findFirst({
@@ -97,6 +108,15 @@ rota.post("/api/v1/registro", async (req, res) => {
     return res.status(400).send("A senha deve conter no mínimo 6 caractéres.");
   }
 
+  switch (parseInt(tipo_cadastro)) {
+    case 1: //Conta de Aluno já fica liberada.
+      acesso = 1;
+      break;
+    case 2: //Conta de motorista tem que passar por aprovação.
+      acesso = 0;
+      break;
+  }
+
   await prisma.usuario
     .create({
       data: {
@@ -116,7 +136,7 @@ rota.post("/api/v1/registro", async (req, res) => {
         complemento: complemento.trim(),
         cep: cep.trim(),
         codigo_bairro: parseInt(codigo_bairro),
-        acesso: 0,
+        acesso: parseInt(acesso),
         excluido: 0,
       },
     })

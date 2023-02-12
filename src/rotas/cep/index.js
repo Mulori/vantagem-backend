@@ -1,17 +1,15 @@
 const rota = require("express").Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const middleware = require("../../middlewares/autenticacao");
-
-rota.use(middleware);
 
 rota.get("/api/v1/cep/estado", async (req, res) => {
   await prisma.estado
-    .findMany()
+    .findMany({ orderBy: { nome: "asc" } })
     .then((e) => {
       return res.status(200).json(e);
     })
     .catch((err) => {
+      console.log(err);
       return res
         .status(500)
         .send("Ocorreu um erro de servidor. Tente Novamente!");
@@ -30,6 +28,7 @@ rota.get("/api/v1/cep/estado/:uf/cidade", async (req, res) => {
       where: {
         UF: uf,
       },
+      orderBy: { nome: "asc" },
     })
     .then((e) => {
       return res.status(200).json(e);
@@ -56,6 +55,7 @@ rota.get("/api/v1/cep/estado/cidade/:id/bairro", async (req, res) => {
       where: {
         id_cidade: parseInt(id),
       },
+      orderBy: { nome: "asc" },
     })
     .then((e) => {
       return res.status(200).json(e);

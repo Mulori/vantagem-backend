@@ -4,6 +4,12 @@ const authConfig = require("../config/autenticacao");
 module.exports = (req, res, next) => {
   const token = req.headers.authorization;
 
+  const cep = req.headers.cep;
+
+  if (cep === "busca-cep") {
+    return next();
+  }
+
   if (!token) return res.status(401).send({ erro: "Token não informado." });
 
   const parts = token.split(" ");
