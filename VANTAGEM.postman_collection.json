@@ -66,7 +66,292 @@
 			"response": []
 		},
 		{
+			"name": "CRIAR VEICULO",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"murilogarcia.hr@gmail.com\",\r\n    \"senha\": \"mhgr230600\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:2258/api/v1/acesso",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2258",
+					"path": [
+						"api",
+						"v1",
+						"acesso"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CRIAR CONTA FINANCEIRA",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"murilogarcia.hr@gmail.com\",\r\n    \"senha\": \"mhgr230600\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:2258/api/v1/acesso",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2258",
+					"path": [
+						"api",
+						"v1",
+						"acesso"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "USUARIO POR ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJhbSI6eyJjb2RpZ28iOjl9LCJpYXQiOjE2NzQwMTI5NjN9.hqQymXoTAx0D7n3oO64gjRGEv8uNbng1vEkCv3FrYEc",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:2258/api/v1/usuarios/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2258",
+					"path": [
+						"api",
+						"v1",
+						"usuarios",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PEGAR TODAS CIDADES",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJhbSI6eyJjb2RpZ28iOjl9LCJpYXQiOjE2NzQwMTI5NjN9.hqQymXoTAx0D7n3oO64gjRGEv8uNbng1vEkCv3FrYEc",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:2258/api/v1/usuarios/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2258",
+					"path": [
+						"api",
+						"v1",
+						"usuarios",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PEGAR TODOS ESTADOS",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJhbSI6eyJjb2RpZ28iOjl9LCJpYXQiOjE2NzQwMTI5NjN9.hqQymXoTAx0D7n3oO64gjRGEv8uNbng1vEkCv3FrYEc",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:2258/api/v1/usuarios/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2258",
+					"path": [
+						"api",
+						"v1",
+						"usuarios",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PEGAR TODOS BAIRROS",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJhbSI6eyJjb2RpZ28iOjl9LCJpYXQiOjE2NzQwMTI5NjN9.hqQymXoTAx0D7n3oO64gjRGEv8uNbng1vEkCv3FrYEc",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:2258/api/v1/usuarios/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2258",
+					"path": [
+						"api",
+						"v1",
+						"usuarios",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PEGAR TODOS VEICULOS",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJhbSI6eyJjb2RpZ28iOjl9LCJpYXQiOjE2NzQwMTI5NjN9.hqQymXoTAx0D7n3oO64gjRGEv8uNbng1vEkCv3FrYEc",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:2258/api/v1/usuarios/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2258",
+					"path": [
+						"api",
+						"v1",
+						"usuarios",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PEGAR VEICULO POR CODIGO",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJhbSI6eyJjb2RpZ28iOjl9LCJpYXQiOjE2NzQwMTI5NjN9.hqQymXoTAx0D7n3oO64gjRGEv8uNbng1vEkCv3FrYEc",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:2258/api/v1/usuarios/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2258",
+					"path": [
+						"api",
+						"v1",
+						"usuarios",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PEGAR TODAS AS ESCOLAS POR CIDADE",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJhbSI6eyJjb2RpZ28iOjl9LCJpYXQiOjE2NzQwMTI5NjN9.hqQymXoTAx0D7n3oO64gjRGEv8uNbng1vEkCv3FrYEc",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:2258/api/v1/escola/cidade/Bebedouro",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2258",
+					"path": [
+						"api",
+						"v1",
+						"escola",
+						"cidade",
+						"Bebedouro"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PEGAR TODOS OS PERIODOS",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJhbSI6eyJjb2RpZ28iOjl9LCJpYXQiOjE2NzQwMTI5NjN9.hqQymXoTAx0D7n3oO64gjRGEv8uNbng1vEkCv3FrYEc",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:2258/api/v1/usuarios/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2258",
+					"path": [
+						"api",
+						"v1",
+						"usuarios",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PEGAR TODOS OS TIPOS TRANSPORTES",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -184,6 +469,67 @@
 						"usuarios",
 						"1",
 						"alteraEmail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ALTERAR VEICULO",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"murilogarcia.hr@gmail.com\",\r\n    \"senha\": \"mhgr230600\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:2258/api/v1/acesso",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2258",
+					"path": [
+						"api",
+						"v1",
+						"acesso"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE VEICULO",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"murilogarcia.hr@gmail.com\",\r\n    \"senha\": \"mhgr230600\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:2258/api/v1/veiculo/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2258",
+					"path": [
+						"api",
+						"v1",
+						"veiculo",
+						"4"
 					]
 				}
 			},

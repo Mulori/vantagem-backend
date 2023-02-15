@@ -8,6 +8,9 @@ const autenticacao = require("./rotas/autenticacao");
 const veiculo = require("./rotas/veiculo");
 const usuarioFinanceiro = require("./rotas/usuariosFinanceiro");
 const cep = require("./rotas/cep");
+const escola = require("./rotas/escola");
+const periodo = require("./rotas/periodo");
+const tipoTransporte = require("./rotas/tipoTransporte");
 
 const { application } = require("express");
 
@@ -40,6 +43,9 @@ server.use(usuario);
 server.use(veiculo);
 server.use(usuarioFinanceiro);
 server.use(cep);
+server.use(escola);
+server.use(periodo);
+server.use(tipoTransporte);
 
 server.listen(process.env.PORT || 2258, () => {
   console.log("AVISO: Sucesso ao iniciar o serviço da API!");
