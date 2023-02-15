@@ -8,62 +8,39 @@ datasource db {
 }
 
 model usuario {
-  codigo                                                        Int                       @id @default(autoincrement())
-  nome                                                          String                    @db.VarChar(100)
-  sobrenome                                                     String                    @db.VarChar(100)
-  email                                                         String                    @db.VarChar(255)
-  senha                                                         String                    @db.VarChar(1000)
+  codigo                                                        Int                  @id @default(autoincrement())
+  nome                                                          String               @db.VarChar(100)
+  sobrenome                                                     String               @db.VarChar(100)
+  email                                                         String               @db.VarChar(255)
+  senha                                                         String               @db.VarChar(1000)
   tipo_cadastro                                                 Int
-  documento                                                     String                    @db.VarChar(15)
-  cadastrado                                                    DateTime                  @db.DateTime(0)
-  alterado                                                      DateTime                  @db.DateTime(0)
-  data_nascimento                                               DateTime?                 @db.Date
-  url_avatar                                                    String?                   @db.VarChar(8000)
-  cnh                                                           String?                   @db.VarChar(15)
-  celular                                                       String?                   @db.VarChar(12)
-  sobre_mim                                                     String?                   @db.VarChar(500)
-  rg                                                            String                    @db.VarChar(15)
-  endereco                                                      String                    @db.VarChar(100)
-  numero                                                        String                    @db.VarChar(10)
-  complemento                                                   String?                   @db.VarChar(150)
-  cep                                                           String                    @db.VarChar(10)
+  documento                                                     String               @db.VarChar(15)
+  cadastrado                                                    DateTime             @db.DateTime(0)
+  alterado                                                      DateTime             @db.DateTime(0)
+  data_nascimento                                               DateTime?            @db.Date
+  url_avatar                                                    String?              @db.VarChar(8000)
+  cnh                                                           String?              @db.VarChar(15)
+  celular                                                       String?              @db.VarChar(12)
+  sobre_mim                                                     String?              @db.VarChar(500)
+  rg                                                            String               @db.VarChar(15)
+  endereco                                                      String               @db.VarChar(100)
+  numero                                                        String               @db.VarChar(10)
+  complemento                                                   String?              @db.VarChar(150)
+  cep                                                           String               @db.VarChar(10)
   codigo_bairro                                                 Int
   acesso                                                        Int
   excluido                                                      Int
-  responsavel_escolar                                           responsavel_escolar[]
+  aluno                                                         aluno[]
+  mensalidade                                                   mensalidade[]
+  responsavel_aluno                                             responsavel_aluno[]
   rota_usuario                                                  rota_usuario[]
-  bairro                                                        bairro                    @relation(fields: [codigo_bairro], references: [codigo], onUpdate: Restrict, map: "fk_usuario_bairro")
+  bairro                                                        bairro               @relation(fields: [codigo_bairro], references: [codigo], onUpdate: Restrict, map: "fk_usuario_bairro")
   usuario_escola                                                usuario_escola[]
   usuario_financeiro                                            usuario_financeiro[]
-  usuario_periodo                                               usuario_periodo[]
-  usuario_tipo_transporte                                       usuario_tipo_transporte[]
-  veiculo_motorista_veiculo_motorista_codigo_motoristaTousuario veiculo_motorista[]       @relation("veiculo_motorista_codigo_motoristaTousuario")
-  veiculo_motorista_veiculo_motorista_codigo_usuarioTousuario   veiculo_motorista[]       @relation("veiculo_motorista_codigo_usuarioTousuario")
+  veiculo_motorista_veiculo_motorista_codigo_motoristaTousuario veiculo_motorista[]  @relation("veiculo_motorista_codigo_motoristaTousuario")
+  veiculo_motorista_veiculo_motorista_codigo_usuarioTousuario   veiculo_motorista[]  @relation("veiculo_motorista_codigo_usuarioTousuario")
 
   @@index([codigo_bairro], map: "fk_usuario_bairro")
-}
-
-model aluno_responsavel_escolar {
-  codigo                 Int                 @id @default(autoincrement())
-  codigo_escola          Int
-  codigo_periodo         Int
-  codigo_responsavel     Int
-  codigo_veiculo         Int
-  codigo_tipo_transporte Int
-  nome_completo          String              @db.VarChar(255)
-  documento              String?             @db.VarChar(50)
-  data_nascimento        DateTime?           @db.Date
-  valor_mensalidade      Decimal             @db.Decimal(14, 2)
-  observacao             String?             @db.VarChar(5000)
-  escola                 escola              @relation(fields: [codigo_escola], references: [codigo], onUpdate: Restrict, map: "fk_codigo_escola_aluno")
-  periodo                periodo             @relation(fields: [codigo_periodo], references: [codigo], onUpdate: Restrict, map: "fk_codigo_periodo_aluno")
-  responsavel_escolar    responsavel_escolar @relation(fields: [codigo_responsavel], references: [codigo], onUpdate: Restrict, map: "fk_codigo_responsavel_escolar")
-  veiculo_motorista      veiculo_motorista   @relation(fields: [codigo_veiculo], references: [codigo], onUpdate: Restrict, map: "fk_codigo_veiculo_aluno")
-
-  @@index([codigo_escola], map: "fk_codigo_escola_aluno")
-  @@index([codigo_periodo], map: "fk_codigo_periodo_aluno")
-  @@index([codigo_responsavel], map: "fk_codigo_responsavel_escolar")
-  @@index([codigo_veiculo], map: "fk_codigo_veiculo_aluno")
 }
 
 model bairro {
@@ -93,17 +70,17 @@ model detalhe_rota_usuario {
 }
 
 model escola {
-  codigo                    Int                         @id @default(autoincrement())
-  nome_escola               String                      @db.VarChar(150)
-  endereco_escola           String                      @db.VarChar(255)
-  bairro_escola             String                      @db.VarChar(100)
-  numero_escola             String                      @db.VarChar(20)
-  cidade_escola             String                      @db.VarChar(150)
-  estado_escola             String                      @db.VarChar(150)
-  cep_escola                String                      @db.VarChar(20)
-  ativo                     Int
-  aluno_responsavel_escolar aluno_responsavel_escolar[]
-  usuario_escola            usuario_escola[]
+  codigo          Int              @id @default(autoincrement())
+  nome_escola     String           @db.VarChar(150)
+  endereco_escola String           @db.VarChar(255)
+  bairro_escola   String           @db.VarChar(100)
+  numero_escola   String           @db.VarChar(20)
+  cidade_escola   String           @db.VarChar(150)
+  estado_escola   String           @db.VarChar(150)
+  cep_escola      String           @db.VarChar(20)
+  ativo           Int
+  aluno           aluno[]
+  usuario_escola  usuario_escola[]
 }
 
 model estado {
@@ -114,34 +91,51 @@ model estado {
 }
 
 model mensalidade {
-  codigo             Int     @id @default(autoincrement())
-  codigo_motorista   Int
-  codigo_responsavel Int
-  ano                Int
-  janeiro_valor      Decimal @db.Decimal(14, 2)
-  janeiro_recebido   Decimal @db.Decimal(14, 2)
-  fevereiro_valor    Decimal @db.Decimal(14, 2)
-  fevereiro_recebido Decimal @db.Decimal(14, 2)
-  marco_valor        Decimal @db.Decimal(14, 2)
-  marco_recebido     Decimal @db.Decimal(14, 2)
-  abril_valor        Decimal @db.Decimal(14, 2)
-  abril_recebido     Decimal @db.Decimal(14, 2)
-  maio_valor         Decimal @db.Decimal(14, 2)
-  maio_recebido      Decimal @db.Decimal(14, 2)
-  junho_valor        Decimal @db.Decimal(14, 2)
-  junho_recebido     Decimal @db.Decimal(14, 2)
-  julho_valor        Decimal @db.Decimal(14, 2)
-  julho_recebido     Decimal @db.Decimal(14, 2)
-  agosto_valor       Decimal @db.Decimal(14, 2)
-  agosto_recebido    Decimal @db.Decimal(14, 2)
-  setembro_valor     Decimal @db.Decimal(14, 2)
-  setembro_recebido  Decimal @db.Decimal(14, 2)
-  outubro_valor      Decimal @db.Decimal(14, 2)
-  outubro_recebido   Decimal @db.Decimal(14, 2)
-  novembro_valor     Decimal @db.Decimal(14, 2)
-  novembro_recebido  Decimal @db.Decimal(14, 2)
-  dezembro_valor     Decimal @db.Decimal(14, 2)
-  dezembro_recebido  Decimal @db.Decimal(14, 2)
+  codigo              Int       @id @default(autoincrement())
+  codigo_motorista    Int
+  codigo_aluno        Int
+  ano                 Int
+  janeiro_valor       Decimal   @db.Decimal(14, 2)
+  janeiro_recebido    Decimal   @db.Decimal(14, 2)
+  janeiro_pagamento   DateTime? @db.DateTime(0)
+  fevereiro_valor     Decimal   @db.Decimal(14, 2)
+  fevereiro_recebido  Decimal   @db.Decimal(14, 2)
+  fevereiro_pagamento DateTime? @db.DateTime(0)
+  marco_valor         Decimal   @db.Decimal(14, 2)
+  marco_recebido      Decimal   @db.Decimal(14, 2)
+  marco_pagamento     DateTime? @db.DateTime(0)
+  abril_valor         Decimal   @db.Decimal(14, 2)
+  abril_recebido      Decimal   @db.Decimal(14, 2)
+  abril_pagamento     DateTime? @db.DateTime(0)
+  maio_valor          Decimal   @db.Decimal(14, 2)
+  maio_recebido       Decimal   @db.Decimal(14, 2)
+  maio_pagamento      DateTime? @db.DateTime(0)
+  junho_valor         Decimal   @db.Decimal(14, 2)
+  junho_recebido      Decimal   @db.Decimal(14, 2)
+  junho_pagamento     DateTime? @db.DateTime(0)
+  julho_valor         Decimal   @db.Decimal(14, 2)
+  julho_recebido      Decimal   @db.Decimal(14, 2)
+  julho_pagamento     DateTime? @db.DateTime(0)
+  agosto_valor        Decimal   @db.Decimal(14, 2)
+  agosto_recebido     Decimal   @db.Decimal(14, 2)
+  agosto_pagamento    DateTime? @db.DateTime(0)
+  setembro_valor      Decimal   @db.Decimal(14, 2)
+  setembro_recebido   Decimal   @db.Decimal(14, 2)
+  setembro_pagamento  DateTime? @db.DateTime(0)
+  outubro_valor       Decimal   @db.Decimal(14, 2)
+  outubro_recebido    Decimal   @db.Decimal(14, 2)
+  outubro_pagamento   DateTime? @db.DateTime(0)
+  novembro_valor      Decimal   @db.Decimal(14, 2)
+  novembro_recebido   Decimal   @db.Decimal(14, 2)
+  novembro_pagamento  DateTime? @db.DateTime(0)
+  dezembro_valor      Decimal   @db.Decimal(14, 2)
+  dezembro_recebido   Decimal   @db.Decimal(14, 2)
+  dezembro_pagamento  DateTime? @db.DateTime(0)
+  aluno               aluno     @relation(fields: [codigo_aluno], references: [codigo], onUpdate: Restrict, map: "fk_codigo_aluno_mensalidade")
+  usuario             usuario   @relation(fields: [codigo_motorista], references: [codigo], onUpdate: Restrict, map: "fk_codigo_motorista_mensalidade")
+
+  @@index([codigo_aluno], map: "fk_codigo_aluno_mensalidade")
+  @@index([codigo_motorista], map: "fk_codigo_motorista_mensalidade")
 }
 
 model opcional {
@@ -151,31 +145,9 @@ model opcional {
 }
 
 model periodo {
-  codigo                    Int                         @id @default(autoincrement())
-  descricao                 String                      @db.VarChar(255)
-  aluno_responsavel_escolar aluno_responsavel_escolar[]
-  usuario_periodo           usuario_periodo[]
-}
-
-model responsavel_escolar {
-  codigo                    Int                         @id @default(autoincrement())
-  codigo_motorista          Int
-  codigo_periodo            Int
-  nome_completo             String                      @db.VarChar(255)
-  cpf_cnpj                  String                      @db.VarChar(14)
-  data_nascimento           DateTime?                   @db.Date
-  email                     String                      @db.VarChar(255)
-  telefone                  String?                     @db.VarChar(30)
-  celular                   String                      @db.VarChar(30)
-  valor_mensalidade         Decimal                     @db.Decimal(14, 2)
-  cadastrado                DateTime                    @db.DateTime(0)
-  alterado                  DateTime                    @db.DateTime(0)
-  ativo                     Int
-  excluido                  Int
-  aluno_responsavel_escolar aluno_responsavel_escolar[]
-  usuario                   usuario                     @relation(fields: [codigo_motorista], references: [codigo], onUpdate: Restrict, map: "fk_codigo_motorista_responsavel")
-
-  @@index([codigo_motorista], map: "fk_codigo_motorista_responsavel")
+  codigo    Int     @id @default(autoincrement())
+  descricao String  @db.VarChar(255)
+  aluno     aluno[]
 }
 
 model rota_usuario {
@@ -188,9 +160,9 @@ model rota_usuario {
 }
 
 model tipo_transporte {
-  codigo                  Int                       @id @default(autoincrement())
-  descricao               String                    @db.VarChar(255)
-  usuario_tipo_transporte usuario_tipo_transporte[]
+  codigo    Int     @id @default(autoincrement())
+  descricao String  @db.VarChar(255)
+  aluno     aluno[]
 }
 
 model usuario_escola {
@@ -203,28 +175,6 @@ model usuario_escola {
 
   @@index([codigo_escola], map: "fk_codigo_escolaa")
   @@index([codigo_usuario], map: "fk_codigo_usuario")
-}
-
-model usuario_periodo {
-  codigo         Int     @id @default(autoincrement())
-  codigo_periodo Int
-  codigo_usuario Int
-  periodo        periodo @relation(fields: [codigo_periodo], references: [codigo], onUpdate: Restrict, map: "fk_codigo_periodo")
-  usuario        usuario @relation(fields: [codigo_usuario], references: [codigo], onUpdate: Restrict, map: "fk_codigo_usuarioo")
-
-  @@index([codigo_periodo], map: "fk_codigo_periodo")
-  @@index([codigo_usuario], map: "fk_codigo_usuarioo")
-}
-
-model usuario_tipo_transporte {
-  codigo                 Int             @id @default(autoincrement())
-  codigo_tipo_transporte Int
-  codigo_usuario         Int
-  tipo_transporte        tipo_transporte @relation(fields: [codigo_tipo_transporte], references: [codigo], onUpdate: Restrict, map: "fk_codigo_tipo_transporte")
-  usuario                usuario         @relation(fields: [codigo_usuario], references: [codigo], onUpdate: Restrict, map: "fk_codigo_usuariooo_tipo_transporte")
-
-  @@index([codigo_tipo_transporte], map: "fk_codigo_tipo_transporte")
-  @@index([codigo_usuario], map: "fk_codigo_usuariooo_tipo_transporte")
 }
 
 model veiculo_motorista {
@@ -241,7 +191,7 @@ model veiculo_motorista {
   alterado                                            DateTime                     @db.DateTime(0)
   ativo                                               Int
   excluido                                            Int
-  aluno_responsavel_escolar                           aluno_responsavel_escolar[]
+  aluno                                               aluno[]
   usuario_veiculo_motorista_codigo_motoristaTousuario usuario                      @relation("veiculo_motorista_codigo_motoristaTousuario", fields: [codigo_motorista], references: [codigo], onUpdate: Restrict, map: "fk_motorista_veiculo")
   usuario_veiculo_motorista_codigo_usuarioTousuario   usuario                      @relation("veiculo_motorista_codigo_usuarioTousuario", fields: [codigo_usuario], references: [codigo], onUpdate: Restrict, map: "fk_usuario_veiculo")
   veiculo_motorista_imagem                            veiculo_motorista_imagem[]
@@ -282,4 +232,50 @@ model usuario_financeiro {
   usuario        usuario  @relation(fields: [codigo_usuario], references: [codigo], onUpdate: Restrict, map: "fk_usuario_financeiro")
 
   @@index([codigo_usuario], map: "fk_usuario_financeiro")
+}
+
+model aluno {
+  codigo                 Int               @id @default(autoincrement())
+  codigo_motorista       Int
+  codigo_escola          Int
+  codigo_periodo         Int
+  codigo_tipo_transporte Int
+  codigo_responsavel     Int
+  codigo_veiculo         Int
+  nome_completo          String            @db.VarChar(255)
+  documento              String?           @db.VarChar(50)
+  data_nascimento        DateTime          @db.Date
+  valor_mensalidade      Decimal           @db.Decimal(14, 2)
+  vencimento_mensalidade DateTime          @db.DateTime(0)
+  observacao             String?           @db.VarChar(5000)
+  escola                 escola            @relation(fields: [codigo_escola], references: [codigo], onUpdate: Restrict, map: "fk_codigo_escola_aluno")
+  usuario                usuario           @relation(fields: [codigo_motorista], references: [codigo], onUpdate: Restrict, map: "fk_codigo_motorista_aluno")
+  periodo                periodo           @relation(fields: [codigo_periodo], references: [codigo], onUpdate: Restrict, map: "fk_codigo_periodo_aluno")
+  tipo_transporte        tipo_transporte   @relation(fields: [codigo_tipo_transporte], references: [codigo], onUpdate: Restrict, map: "fk_codigo_tipo_transporte_aluno")
+  veiculo_motorista      veiculo_motorista @relation(fields: [codigo_veiculo], references: [codigo], onUpdate: Restrict, map: "fk_codigo_veiculo_aluno")
+  mensalidade            mensalidade[]
+
+  @@index([codigo_escola], map: "fk_codigo_escola_aluno")
+  @@index([codigo_motorista], map: "fk_codigo_motorista_aluno")
+  @@index([codigo_periodo], map: "fk_codigo_periodo_aluno")
+  @@index([codigo_tipo_transporte], map: "fk_codigo_tipo_transporte_aluno")
+  @@index([codigo_veiculo], map: "fk_codigo_veiculo_aluno")
+}
+
+model responsavel_aluno {
+  codigo           Int       @id @default(autoincrement())
+  codigo_motorista Int
+  nome_completo    String    @db.VarChar(255)
+  cpf_cnpj         String    @db.VarChar(14)
+  data_nascimento  DateTime? @db.Date
+  email            String    @db.VarChar(255)
+  telefone         String?   @db.VarChar(30)
+  celular          String    @db.VarChar(30)
+  cadastrado       DateTime  @db.DateTime(0)
+  alterado         DateTime  @db.DateTime(0)
+  ativo            Int
+  excluido         Int
+  usuario          usuario   @relation(fields: [codigo_motorista], references: [codigo], onUpdate: Restrict, map: "fk_codigo_motorista_responsavel")
+
+  @@index([codigo_motorista], map: "fk_codigo_motorista_responsavel")
 }
