@@ -11,6 +11,7 @@ const cep = require("./rotas/cep");
 const escola = require("./rotas/escola");
 const periodo = require("./rotas/periodo");
 const tipoTransporte = require("./rotas/tipoTransporte");
+const fileUploads = require("./rotas/upload");
 
 const { application } = require("express");
 
@@ -46,6 +47,10 @@ server.use(cep);
 server.use(escola);
 server.use(periodo);
 server.use(tipoTransporte);
+server.use(fileUploads);
+
+server.use("/public", express.static("public"));
+server.use(express.static("public"));
 
 server.listen(process.env.PORT || 2258, () => {
   console.log("AVISO: Sucesso ao iniciar o serviço da API!");

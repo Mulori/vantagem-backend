@@ -4,9 +4,9 @@ const prisma = new PrismaClient();
 const md5 = require("md5");
 const middleware = require("../../middlewares/autenticacao");
 
-rota.use(middleware);
+//rota.use(middleware);
 
-rota.get("/api/v1/escola/cidade/:nome", async (req, res) => {
+rota.get("/api/v1/escola/cidade/:nome", middleware, async (req, res) => {
   const nome = req.params.nome;
 
   if (!nome) {
