@@ -3,9 +3,9 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const middleware = require("../../middlewares/autenticacao");
 
-rota.use(middleware);
+//rota.use(middleware);
 
-rota.post("/api/v1/veiculo", async (req, res) => {
+rota.post("/api/v1/veiculo", middleware, async (req, res) => {
   const {
     codigo_usuario,
     codigo_motorista,
@@ -117,12 +117,13 @@ rota.post("/api/v1/veiculo", async (req, res) => {
     .then((e) => {
       res.status(200).json(e);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       res.status(500).send("Ocorreu um erro interno de servidor.");
     });
 });
 
-rota.put("/api/v1/veiculo/:id", async (req, res) => {
+rota.put("/api/v1/veiculo/:id", middleware, async (req, res) => {
   const { id } = req.params;
 
   const {
@@ -259,7 +260,7 @@ rota.put("/api/v1/veiculo/:id", async (req, res) => {
     });
 });
 
-rota.delete("/api/v1/veiculo/:id", async (req, res) => {
+rota.delete("/api/v1/veiculo/:id", middleware, async (req, res) => {
   const { id } = req.params;
   const { usuario } = req.headers;
 
@@ -313,7 +314,7 @@ rota.delete("/api/v1/veiculo/:id", async (req, res) => {
     });
 });
 
-rota.get("/api/v1/veiculo", async (req, res) => {
+rota.get("/api/v1/veiculo", middleware, async (req, res) => {
   const id = req.headers.usuario;
 
   if (!id) {
@@ -348,7 +349,7 @@ rota.get("/api/v1/veiculo", async (req, res) => {
     });
 });
 
-rota.get("/api/v1/veiculo/:id", async (req, res) => {
+rota.get("/api/v1/veiculo/:id", middleware, async (req, res) => {
   const usuario = req.headers.usuario;
   const veiculo = req.params.id;
 

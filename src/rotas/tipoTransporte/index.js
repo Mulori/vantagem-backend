@@ -4,9 +4,9 @@ const prisma = new PrismaClient();
 const md5 = require("md5");
 const middleware = require("../../middlewares/autenticacao");
 
-rota.use(middleware);
+//rota.use(middleware);
 
-rota.get("/api/v1/tipotransporte", async (req, res) => {
+rota.get("/api/v1/tipotransporte", middleware, async (req, res) => {
   await prisma.tipo_transporte
     .findMany({
       orderBy: {

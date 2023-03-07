@@ -4,9 +4,9 @@ const prisma = new PrismaClient();
 const md5 = require("md5");
 const middleware = require("../../middlewares/autenticacao");
 
-rota.use(middleware);
+//ota.use(middleware);
 
-rota.post("/api/v1/usuariofinanceiro", async (req, res) => {
+rota.post("/api/v1/usuariofinanceiro", middleware, async (req, res) => {
   const { codigo_usuario, tipo_chave_pix, chave_pix } = req.body;
 
   var now = new Date();
