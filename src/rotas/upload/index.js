@@ -2,10 +2,18 @@ const rota = require("express").Router();
 const { PrismaClient } = require("@prisma/client");
 const middleware = require("../../middlewares/autenticacao");
 const prisma = new PrismaClient();
+
+const { uploadAvatar } = require("../../libs/multer");
+
+const { uploadFileAvatar } = require("../../controllers/index.controllers");
+
+rota.post("/api/v1/upload/avatar/:id", uploadAvatar, uploadFileAvatar);
+
+/*
 const multer = require("multer");
 const parser = multer({ dest: "public/uploads/" });
 
-const storage = multer.diskStorage({
+const storage = multer.diskStorage ({
   destination: "public/uploads/",
   filename: function (req, file, cb) {
     cb(null, `${Date.now()}_image_${file.originalname}`);
@@ -34,5 +42,7 @@ rota.post("/api/v1/upload/avatar/:id", upload, async function (req, res) {
         .send("Ocorreu um erro inesperado ao alterar o e-mail da conta.");
     });
 });
+
+*/
 
 module.exports = rota;
